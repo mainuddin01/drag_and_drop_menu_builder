@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Oscar Menu Editor - Demo</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="bs-iconpicker/css/bootstrap-iconpicker.min.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"><h2>Demo</h2></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix"><h5 class="pull-left">Menu</h5></div>
+                        <div class="panel-body" id="cont">
+                            <ul id="myEditor" class="sortableLists list-group">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group"><textarea id="out" class="form-control" cols="50" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Edit item</div>
+                        <div class="panel-body">
+                            <form id="frmEdit" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="type" class="col-sm-2 control-label">Type</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control item-menu" name="type" id="type">
+                                          <option value="url">Custom URL</option>
+                                          <option value="page">Page</option>
+                                          <option value="category">Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">Text</label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control item-menu" name="text" id="text" placeholder="Text">
+                                            <div class="input-group-btn">
+                                                <button type="button" id="myEditor_icon" class="btn btn-default iconpicker" data-iconset="fontawesome"><i></i><input type="hidden"><span class="caret"></span></button>
+                                            </div>
+                                            <input type="hidden" name="icon" class="item-menu">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="variable-form">
+                                    <div class="form-group">
+                                        <label for="href" class="col-sm-2 control-label">URL</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control item-menu" id="href" name="href" placeholder="URL">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="target" class="col-sm-2 control-label">Target</label>
+                                        <div class="col-sm-10">
+                                            <select name="target" id="target" class="form-control item-menu">
+                                                <option value="_self">Self</option>
+                                                <option value="_blank">Blank</option>
+                                                <option value="_top">Top</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="title" class="col-sm-2 control-label">Tooltip</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="title" class="form-control item-menu" id="title" placeholder="Tooltip">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" id="btnUpdate" class="btn btn-primary" disabled><i class="fa fa-refresh"></i> Update</button>
+                            <button type="button" id="btnAdd" class="btn btn-success"><i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <footer>
+            </footer>
+        </div>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src='bs-iconpicker/js/iconset/iconset-fontawesome-4.7.0.min.js'></script>
+        <script src='bs-iconpicker/js/bootstrap-iconpicker.js'></script>
+        <script src='jquery-menu-editor.js'></script>
+        <script>
+            jQuery(document).ready(function () {
+
+                var url_form = `<div class="form-group">
+                        <label for="href" class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control item-menu" id="href" name="href" placeholder="URL">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="target" class="col-sm-2 control-label">Target</label>
+                        <div class="col-sm-10">
+                            <select name="target" id="target" class="form-control item-menu">
+                                <option value="_self">Self</option>
+                                <option value="_blank">Blank</option>
+                                <option value="_top">Top</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Tooltip</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" class="form-control item-menu" id="title" placeholder="Tooltip">
+                        </div>
+                    </div>`
+
+                var page_form = `<div class="form-group">
+                        <label for="page-type" class="col-sm-2 control-label">Page</label>
+                        <div class="col-sm-10">
+                            <select class="form-control item-menu" name="page-type" id="page-type">
+                              <option value="page-one">First Page</option>
+                              <option value="page-two">Second Page</option>
+                              <option value="page-three">Third Page</option>
+                            </select>
+                        </div>
+                    </div>`
+
+                var category_form = `<div class="form-group">
+                        <label for="category-type" class="col-sm-2 control-label">Category</label>
+                        <div class="col-sm-10">
+                            <select class="form-control item-menu" name="page-type" id="page-type">
+                              <option value="category-one">Category One</option>
+                              <option value="category-two">Category Two</option>
+                              <option value="category-three">Category Three</option>
+                            </select>
+                        </div>
+                    </div>`
+
+
+                // menu items
+                var strjson = [{"href":"http://home.com","icon":"fa fa-home","text":"Home", "target": "_top", "title": "My Home"},{"icon":"fa fa-bar-chart-o","text":"Opcion2"},{"icon":"fa fa-cloud-upload","text":"Opcion3"},{"icon":"fa fa-crop","text":"Opcion4"},{"icon":"fa fa-flask","text":"Opcion5"},{"icon":"fa fa-map-marker","text":"Opcion6"},{"icon":"fa fa-search","text":"Opcion7","children":[{"icon":"fa fa-plug","text":"Opcion7-1","children":[{"icon":"fa fa-filter","text":"Opcion7-1-1"}]}]}];
+                //icon picker options
+                var iconPickerOptions = {searchText: 'Buscar...', labelHeader: '{0} de {1} Pags.'};
+                //sortable list options
+                var sortableListOptions = {
+                    placeholderCss: {'background-color': 'cyan'}
+                };
+
+                var editor = new MenuEditor('myEditor', {listOptions: sortableListOptions, iconPicker: iconPickerOptions, labelEdit: 'Edit'});
+                editor.setForm($('#frmEdit'));
+                editor.setUpdateButton($('#btnUpdate'));
+
+                // $('#btnReload').on('click', function () {
+                //     editor.setData(strjson);
+                // });
+
+                editor.setData(strjson);
+                var str = editor.getString();
+                $("#out").text(str);
+
+                // $('#btnOut').on('click', function () {
+                //     var str = editor.getString();
+                //     $("#out").text(str);
+                // });
+
+                $("#btnUpdate").click(function(){
+                    var spItem = editor.getCurrentItem();
+                    editor.getForm().find('.item-menu').each(function(){
+                        spItem.data($(this).attr('name'), $(this).val());
+                        spItem.data()['page-type'] = spItem.data()['pageType'];
+                    });
+                    editor.update();
+                    $('#variable-form').html(url_form);
+                    var str = editor.getString();
+                    $("#out").text(str);
+                });
+
+                $('#btnAdd').click(function(){
+                    editor.add();
+                    var str = editor.getString();
+                    $("#out").text(str);
+                    $('#variable-form').html(url_form);
+                });
+
+                $('#myEditor').on('DOMSubtreeModified', function(event) {
+                    var str = editor.getString();
+                    $("#out").text(str);
+                });
+
+
+                $('#type').change(function() {
+                    var type = $(this).val();
+                    var form = eval(type + '_form');
+                    $('#variable-form').html(form);
+                    if (type == 'page' | type == 'category') {
+                        var selectedData = $('#page-type').find('option:selected').text();
+                        $('#text').val(selectedData);
+                    }
+                });
+
+                $(document).on('change', '#page-type', function() {
+                    // var selectedData = $("#page-type option:selected").text();
+                    var selectedData = $('#page-type').find('option:selected').text();
+                    $('#text').val(selectedData);
+                });
+
+                $(document).on('click', '.btnEdit', function (e) {
+                    e.preventDefault();
+                    var itemEditing = $(this).closest('li');
+                    console.log(itemEditing.data()['type']);
+
+                    var itemType = itemEditing.data()['type'];
+                    var form = eval(itemType + '_form');
+                    // console.log(formData);
+                    if(itemType != 'url') {
+                        $('#variable-form').html(form);
+                        var form = $('#frmEdit');
+                        var data = itemEditing.data();
+                        $.each(data, function (p, v) {
+                            console.log(data[p]);
+                            form.find("[name=" + p + "]").val(v);
+                        });
+                    }
+
+                });
+
+            });
+        </script>
+    </body>
+</html>
